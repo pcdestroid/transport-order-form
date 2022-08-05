@@ -1,0 +1,284 @@
+<body>
+    <style>
+        h1 {
+            font-family: "Google Sans", Roboto, sans-serif;
+            color: #3f51b5;
+            text-align: center;
+        }
+
+        input[id="solTransp"],
+        input[type=submit],
+        input[type=reset] {
+
+            text-align: center;
+            background-color: #3f51b5;
+            border: none;
+            color: white;
+            padding: 12px 22px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+
+            color: #000000;
+            font-family: Open Sans, sans-serif;
+            font-size: 14px;
+            background-color: #f4f4f4;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-right-style: solid;
+            border-top-style: solid;
+            border-color: #666666;
+            border-radius: 1px;
+            border-width: 1px;
+            max-width: 100% !important;
+            text-align: center;
+        }
+
+        input[type="text"]:focus {
+            border: 2px solid #555;
+        }
+
+        select {
+            color: #000000;
+            font-family: Open Sans, sans-serif;
+            font-size: 14px;
+            background-color: #f4f4f4;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-right-style: solid;
+            border-top-style: solid;
+            border-color: #666666;
+            border-radius: 1px;
+            border-width: 1px;
+            max-width: 100% !important;
+            padding: 5px 18px;
+        }
+
+        form {
+            font-family: "Google Sans", Roboto, sans-serif;
+            text-align: center;
+        }
+
+        div[id=aviso] {
+            font-family: "Google Sans", Roboto, sans-serif;
+            text-align: center;
+            color: red;
+            font-size: 12px;
+        }
+
+        input[type="date"]::-webkit-clear-button {
+            display: none;
+        }
+
+        input[type="date"]::-webkit-inner-spin-button {
+            display: none;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            color: #000000;
+        }
+
+        input[type="date"] {
+            appearance: none;
+            -webkit-appearance: none;
+            color: #000000;
+            font-family: "Helvetica", arial, sans-serif;
+            font-size: 18px;
+            border: 1px solid #ecf0f1;
+            background: #f1f1f1;
+            padding: 5px;
+            display: inline-block !important;
+            visibility: visible !important;
+            text-align: center;
+
+        }
+
+        input[type="prod"] {
+            color: #000000;
+            font-family: Open Sans, sans-serif;
+            font-size: 14px;
+            background-color: #f4f4f4;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-right-style: solid;
+            border-top-style: solid;
+            border-color: #666666;
+            border-radius: 1px;
+            border-width: 1px;
+            max-width: 100% !important;
+            text-align: center;
+            padding: 6px 0px;
+            width: 50%;
+            margin-bottom: 4px;
+        }
+
+        input[type="number"] {
+            color: #000000;
+            font-family: Open Sans, sans-serif;
+            font-size: 14px;
+            background-color: #f4f4f4;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-right-style: solid;
+            border-top-style: solid;
+            border-color: #666666;
+            border-radius: 1px;
+            border-width: 1px;
+            max-width: 100% !important;
+            text-align: center;
+            padding: 6px 0px;
+            width: 12%;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        input[id="maisProdutos"] {
+            text-align: center;
+            background-color: #3f51b5;
+            border: none;
+            color: white;
+            padding: 6px 10px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+    <h1>Contratação de transporte</h1><br>
+    <form id="form">
+        <center>
+
+            Solicitante do Frete: <br><input type="text" id="solicitante" name="solicitante"><br><br>
+            Origem: <br><select id="origem" name="origem" onchange="javascript:mostraDestino(this)">
+            </select><br><br>
+            Destino: <br><select id="destino" name="destino" onchange="javascript:mostraPagador(this)">
+            </select><br><br>
+
+            Pagador: <br><select id="pagador" name="pagador">
+            </select><br><br>
+
+            Data de carga: <br><input type="date" id="carga" name="carga"
+                onchange="javascript:alterarDescarga(this)"><br><br>
+            Data de descarga: <br><input type="date" id="descarga" name="descarga"><br><br>
+
+            Quantidade \ Produtos: <br>
+            <div id="divForm"></div>
+            <input type="button" id="maisProdutos" onclick="AddInput()" value="+ Produtos" />
+
+            <br><br>
+            <input type="button" id="solTransp" value="Solicitar Transporte" onclick="javascript:solicitarFrete()">
+            <div id="aviso"></div>
+        </center>
+    </form>
+
+</body>
+
+<script>
+    const marinas = ['Marina Verolme', 'Marina Piratas', 'Marina Bracuhy', 'Marina Ribeira', 'Marina Paraty', 'Marina Itacuruçá', 'Marina Glória', 'Marina Búzios'];
+    const origem = document.getElementById("origem"), destino = document.getElementById("destino"), pagador = document.getElementById("pagador");
+    
+    //Inserir ids do formulario
+    const formId = "" 
+    const camposForm = ["&entry.1261279208=", "&entry.543026738=", "&entry.40759172=", "&entry.2044717193=", "&entry.1073288480=", "&entry.270047449=", "&entry.1272716714="]
+
+    const url = "https://docs.google.com/forms/u/0/d/e/"+ formId +"/formResponse"
+    var solicitante = document.getElementById("solicitante")
+    var carga = document.getElementById("carga")
+    var descarga = document.getElementById("descarga")
+    var produtos = "";
+    var CountProds = 0;
+    AddInput()
+
+    function AddInput() {
+        h = CountProds;
+        var form = document.getElementById("divForm");
+        var input = document.createElement("INPUT");
+        var input2 = document.createElement("INPUT");
+        var quebralinha = document.createElement("br");
+        var div = document.createElement("div");
+
+        //produto
+        input.setAttribute("type", "prod");
+        input.setAttribute("id", "refp" + h);
+        input.setAttribute("name", "refp" + h);
+        div.setAttribute("id", "lsRefp" + h);
+        div.setAttribute("name", "lsRefp" + h);
+
+        //quantidade
+        input2.setAttribute("type", "number");
+        input2.setAttribute("id", "refq" + h);
+        input2.setAttribute("name", "refq" + h);
+        div.setAttribute("id", "lsRefq" + h);
+        div.setAttribute("name", "lsRefq" + h);
+
+        form.appendChild(input2);
+        form.appendChild(input);
+        form.appendChild(quebralinha);
+
+        CountProds++;
+
+    }
+
+    for (let i = 0; i < marinas.length; i++) {
+        let option = document.createElement("option");
+        option.value = marinas[i]; option.text = marinas[i]; origem.appendChild(option);
+    }
+
+    for (let i = 0; i < marinas.length; i++) {
+
+        if (marinas[i] != origem.value) {
+            let option = document.createElement("option");
+            option.value = marinas[i]; option.text = marinas[i]; destino.appendChild(option);
+        }
+    }
+    mostraPagador()
+
+    function mostraDestino(elemento) {
+        document.getElementById("destino").innerHTML = ""
+        for (let i = 0; i < marinas.length; i++) {
+
+            if (marinas[i] != origem.value) {
+                let option = document.createElement("option");
+                option.value = marinas[i]; option.text = marinas[i]; destino.appendChild(option);
+            }
+        }
+        mostraPagador()
+    }
+
+    function mostraPagador() {
+        document.getElementById("pagador").innerHTML = ""
+        let option = document.createElement("option"); option.value = destino.value; option.text = destino.value; pagador.appendChild(option);
+        option = document.createElement("option"); option.value = origem.value; option.text = origem.value; pagador.appendChild(option);
+    }
+
+    function alterarDescarga(elemento) {
+        document.getElementById("descarga").value = elemento.value
+    }
+
+    function solicitarFrete() {
+
+        //Pegar os produtos
+        for (let i = 0; i < CountProds; i++) {
+            if (document.getElementById("refq" + i).value != 0 && document.getElementById("refp" + i).value != 0) {produtos = produtos + document.getElementById("refq" + i).value + 'un|' + document.getElementById("refp" + i).value + ','}
+        }
+
+        if (solicitante.value != 0 && origem.value != 0 && destino.value != 0 && pagador.value != 0 && carga.value != 0 && descarga.value != 0 && produtos != 0) {
+            var xhr = new XMLHttpRequest();
+            var params = camposForm[0] + solicitante.value + camposForm[1] + origem.value + camposForm[2] + destino.value + camposForm[3] + pagador.value + camposForm[4] + carga.value + camposForm[5] + descarga.value + camposForm[6] + produtos;
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    alert(this.responseText);
+                }
+            }
+            xhr.send(params);
+            document.getElementById("form").innerHTML = "Pedido de transporte enviado com sucesso!"
+        } else {
+            document.getElementById("aviso").innerHTML = "Verifique os campos em branco*"
+        }
+    }
+
+</script>
