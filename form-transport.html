@@ -35,6 +35,27 @@
             border-width: 1px;
             max-width: 100% !important;
             text-align: center;
+            width: 95%;
+            margin-bottom: 4px;
+        }
+
+        input[type="number"] {
+
+            color: #000000;
+            font-family: Open Sans, sans-serif;
+            font-size: 14px;
+            background-color: #f4f4f4;
+            border-bottom-style: solid;
+            border-left-style: solid;
+            border-right-style: solid;
+            border-top-style: solid;
+            border-color: #666666;
+            border-width: 1px;
+            max-width: 100% !important;
+            text-align: center;
+            width: 95%;
+            margin-bottom: 4px;
+
         }
 
         input[type="text"]:focus {
@@ -54,11 +75,35 @@
             border-radius: 1px;
             border-width: 1px;
             max-width: 100% !important;
-            padding: 5px 18px;
+            text-align: center;
+            width: 95%;
+            margin-bottom: 4px;
         }
 
         form {
             font-family: "Google Sans", Roboto, sans-serif;
+            text-align: center;
+            width: 95%;
+        }
+
+        div {
+            font-family: "Google Sans", Roboto, sans-serif;
+            text-align: center;
+            color: rgb(0, 0, 0);
+            font-size: 11px;
+            
+        }
+
+        div [id=formprod]{
+            font-family: "Google Sans", Roboto, sans-serif;
+            color: rgb(0, 0, 0);
+            font-size: 11px;
+            background-color: #3f51b527;
+            border-style: solid;
+            border-color: #00000048;
+            border-radius: 0.1px;
+            border-width: 1;
+            margin-bottom: 6px;
             text-align: center;
         }
 
@@ -77,62 +122,20 @@
             display: none;
         }
 
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            color: #000000;
-        }
-
         input[type="date"] {
             appearance: none;
             -webkit-appearance: none;
             color: #000000;
-            font-family: "Helvetica", arial, sans-serif;
-            font-size: 18px;
+            font-family: Open Sans, sans-serif;
+            font-size: 14px;
             border: 1px solid #ecf0f1;
             background: #f1f1f1;
             padding: 5px;
             display: inline-block !important;
             visibility: visible !important;
             text-align: center;
+            width: 95%;
 
-        }
-
-        input[type="prod"] {
-            color: #000000;
-            font-family: Open Sans, sans-serif;
-            font-size: 14px;
-            background-color: #f4f4f4;
-            border-bottom-style: solid;
-            border-left-style: solid;
-            border-right-style: solid;
-            border-top-style: solid;
-            border-color: #666666;
-            border-radius: 1px;
-            border-width: 1px;
-            max-width: 100% !important;
-            text-align: center;
-            padding: 6px 0px;
-            width: 50%;
-            margin-bottom: 4px;
-        }
-
-        input[type="number"] {
-            color: #000000;
-            font-family: Open Sans, sans-serif;
-            font-size: 14px;
-            background-color: #f4f4f4;
-            border-bottom-style: solid;
-            border-left-style: solid;
-            border-right-style: solid;
-            border-top-style: solid;
-            border-color: #666666;
-            border-radius: 1px;
-            border-width: 1px;
-            max-width: 100% !important;
-            text-align: center;
-            padding: 6px 0px;
-            width: 12%;
-            margin-right: 4px;
-            margin-bottom: 4px;
         }
 
         input[id="maisProdutos"] {
@@ -144,6 +147,32 @@
             text-decoration: none;
             margin: 4px 2px;
             cursor: pointer;
+        }
+
+        td {
+            height: 20px;
+            text-align: center
+        }
+
+        span {
+            font-family: "Google Sans", Roboto, sans-serif;
+            text-align: center;
+            font-size: 11px
+        }
+
+        col {
+            width: 10%;
+            text-align: center;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+            border-color: #666666;
+            border-radius: 1px;
+            text-align: center;
         }
     </style>
     <h1>Contratação de transporte</h1><br>
@@ -163,8 +192,10 @@
                 onchange="javascript:alterarDescarga(this)"><br><br>
             Data de descarga: <br><input type="date" id="descarga" name="descarga"><br><br>
 
-            Quantidade \ Produtos: <br>
+            Materiais<br>
+
             <div id="divForm"></div>
+
             <input type="button" id="maisProdutos" onclick="AddInput()" value="+ Produtos" />
 
             <br><br>
@@ -178,12 +209,13 @@
 <script>
     const marinas = ['Marina Verolme', 'Marina Piratas', 'Marina Bracuhy', 'Marina Ribeira', 'Marina Paraty', 'Marina Itacuruçá', 'Marina Glória', 'Marina Búzios'];
     const origem = document.getElementById("origem"), destino = document.getElementById("destino"), pagador = document.getElementById("pagador");
-    
-    //Inserir ids do formulario
-    const formId = "" 
+
+    //Inserir id do formulario
+    const formId = ""
+    //Inserir ids dos campos do formulario
     const camposForm = ["&entry.1261279208=", "&entry.543026738=", "&entry.40759172=", "&entry.2044717193=", "&entry.1073288480=", "&entry.270047449=", "&entry.1272716714="]
 
-    const url = "https://docs.google.com/forms/u/0/d/e/"+ formId +"/formResponse"
+    const url = "https://docs.google.com/forms/u/0/d/e/" + formId + "/formResponse"
     var solicitante = document.getElementById("solicitante")
     var carga = document.getElementById("carga")
     var descarga = document.getElementById("descarga")
@@ -193,29 +225,153 @@
 
     function AddInput() {
         h = CountProds;
-        var form = document.getElementById("divForm");
-        var input = document.createElement("INPUT");
-        var input2 = document.createElement("INPUT");
-        var quebralinha = document.createElement("br");
+
+        var form1 = document.getElementById("divForm");
+        var form = document.createElement("div");
+        form.id = "formprod"
+        form1.appendChild(form)
         var div = document.createElement("div");
 
-        //produto
-        input.setAttribute("type", "prod");
-        input.setAttribute("id", "refp" + h);
-        input.setAttribute("name", "refp" + h);
-        div.setAttribute("id", "lsRefp" + h);
-        div.setAttribute("name", "lsRefp" + h);
+        //Criando Input do produto
+        var input = document.createElement("INPUT");
+        input.stype = "text"
+        input.id = "refp" + h
 
-        //quantidade
-        input2.setAttribute("type", "number");
-        input2.setAttribute("id", "refq" + h);
-        input2.setAttribute("name", "refq" + h);
-        div.setAttribute("id", "lsRefq" + h);
-        div.setAttribute("name", "lsRefq" + h);
+        //Criando Input da quantidade
+        var input2 = document.createElement("INPUT");
+        input2.type = "number"
+        input2.id = "refq" + h
+        input2.setAttribute("onchange", "javascript:repetirQtdVol(this.id,this.value)");
 
-        form.appendChild(input2);
+        //Criando Input da unidade de medida
+        var input3 = document.createElement("select");
+        input3.type = "text"
+        input3.id = "refum" + h
+
+        //Criando Input do valor
+        var input4 = document.createElement("INPUT");
+        input4.type = "number"
+        input4.id = "refv" + h
+        input4.step = ".01"
+
+        //Criando Input do peso
+        var input5 = document.createElement("INPUT");
+        input5.type = "number"
+        input5.id = "refpeso" + h
+        input5.step = ".01"
+        //Criando Input do comprimento
+        var input6 = document.createElement("INPUT");
+        input6.type = "number"
+        input6.id = "refcomp" + h
+        input6.step = ".01"
+        input6.setAttribute("onchange", "javascript:repetirQtdVol(this.id,this.value)");
+
+        //Criando Input da largura
+        var input7 = document.createElement("INPUT");
+        input7.type = "number"
+        input7.id = "refvlarg" + h
+        input7.step = ".01"
+        input7.setAttribute("onchange", "javascript:repetirQtdVol(this.id,this.value)");
+        //Criando Input da altura
+        var input8 = document.createElement("INPUT");
+        input8.type = "number"
+        input8.id = "refalt" + h
+        input8.step = ".01"
+        input8.setAttribute("onchange", "javascript:repetirQtdVol(this.id,this.value)");
+        //Criando Input do volume
+        var input9 = document.createElement("INPUT");
+        input9.type = "number"
+        input9.id = "refvol" + h
+        input9.step = ".01"
+        input9.disabled="disabled"
+        input9.setAttribute("onchange", "javascript:repetirQtdVol(this.id,this.value)");
+        //Criando Input da volumetria
+        var input10 = document.createElement("INPUT");
+        input10.type = "number"
+        input10.id = "reftria" + h
+        input10.step = ".01"
+        input10.disabled="disabled"
+
+        //Inserindo input Produto
+        tituloProduto = document.createElement("div");
+        form.appendChild(tituloProduto);
+        tituloProduto.innerHTML = "Produto:"
         form.appendChild(input);
-        form.appendChild(quebralinha);
+
+        //criando tabela
+
+        var tabela = document.createElement("table");
+        tabela.id = "reftabela" + h
+        form.appendChild(tabela);
+
+        var colgroup = document.createElement("colgroup");
+        colgroup.id = "refcolgrup" + h
+        tabela.appendChild(colgroup);
+
+        for (let i = 1; i < 11; i++) {
+            colgroup.appendChild(document.createElement("col"))
+        }
+
+        var corpoTabela = document.createElement("tbody");
+        corpoTabela.setAttribute("id", "refct" + h);
+        tabela.appendChild(corpoTabela);
+
+        // Linha head
+        var textHead = ['Quantidade', 'U.M', 'Valor(uni)', 'Peso(kg)', 'Comprimento(m)', 'Largura(m)', 'Altura(m)', 'Nº volumes', 'Volumetria', 'Ação']
+        var linhaDetalhes = document.createElement("tr");
+        linhaDetalhes.setAttribute("id", "refld" + h);
+        corpoTabela.appendChild(linhaDetalhes);
+        for (let i = 1; i < 11; i++) {
+            var headDetalhes = document.createElement("td");
+            headDetalhes.setAttribute("id", "refhd" + i + h);
+            linhaDetalhes.appendChild(headDetalhes);
+            var sdetalhes = document.createElement("span");
+            sdetalhes.setAttribute("id", "refsd" + i + h)
+            headDetalhes.appendChild(sdetalhes);
+            sdetalhes.innerText = textHead[i - 1]
+        }
+
+
+        // Linha com detalhes do produto
+        var linhaDetalhes = document.createElement("tr");
+        linhaDetalhes.id = "reflt" + h;
+        corpoTabela.appendChild(linhaDetalhes);
+        for (let i = 1; i < 11; i++) {
+            var detalhesProdutos = document.createElement("td");
+            detalhesProdutos.id = "refpc" + i + h
+            linhaDetalhes.appendChild(detalhesProdutos);
+        }
+        // Inserindo Input da quantidade
+        let celulaQuantidade = document.getElementById(("id", "refpc1" + h));
+        celulaQuantidade.appendChild(input2);
+        // Inserindo Input da unidade de medida
+        let celulaUnidadeMedida = document.getElementById(("id", "refpc2" + h));
+        celulaUnidadeMedida.appendChild(input3);
+        let option = document.createElement("option");
+        option.value = 'UN'; option.text = 'UN'; input3.appendChild(option);
+        // Inserindo Input do valor
+        let celulaValor = document.getElementById(("id", "refpc3" + h));
+        celulaValor.appendChild(input4);
+        // Inserindo Input do peso
+        let celulaPeso = document.getElementById(("id", "refpc4" + h));
+        celulaPeso.appendChild(input5);
+        // Inserindo Input do comprimento
+        let celulaComprimento = document.getElementById(("id", "refpc5" + h));
+        celulaComprimento.appendChild(input6);
+        // Inserindo Input da largura
+        let celulaLargura = document.getElementById(("id", "refpc6" + h));
+        celulaLargura.appendChild(input7);
+        // Inserindo Input da altura
+        let celulaAltura = document.getElementById(("id", "refpc7" + h));
+        celulaAltura.appendChild(input8);
+        // Inserindo Input do volume
+        let celulavolumes = document.getElementById(("id", "refpc8" + h));
+        celulavolumes.appendChild(input9);
+        // Inserindo Input da volumetria
+        let celulaVolumetria = document.getElementById(("id", "refpc9" + h));
+        celulaVolumetria.appendChild(input10);
+
+        form.appendChild(document.createElement("br"));
 
         CountProds++;
 
@@ -233,6 +389,19 @@
             option.value = marinas[i]; option.text = marinas[i]; destino.appendChild(option);
         }
     }
+    function repetirQtdVol(x){
+         x = x.replace("refq","").replace("refvol","").replace("refcomp","").replace("refvlarg","").replace("refalt","")
+        let qtd = document.getElementById("refq" + x);
+        let vol = document.getElementById("refvol" + x);
+        let tria = document.getElementById("reftria" + x);
+        let comp = document.getElementById("refcomp" + x);
+        let larg = document.getElementById("refvlarg" + x);
+        let alt = document.getElementById("refalt" + x);
+
+        vol.value = qtd.value;
+        tria.value = (comp.value * larg.value * alt.value) * vol.value;
+    }
+
     mostraPagador()
 
     function mostraDestino(elemento) {
@@ -258,10 +427,12 @@
     }
 
     function solicitarFrete() {
-
+        
         //Pegar os produtos
         for (let i = 0; i < CountProds; i++) {
-            if (document.getElementById("refq" + i).value != 0 && document.getElementById("refp" + i).value != 0) {produtos = produtos + document.getElementById("refq" + i).value + 'un|' + document.getElementById("refp" + i).value + ','}
+
+            if (document.getElementById("refp" + i).value != 0 && document.getElementById("refq" + i).value != 0 && document.getElementById("refum" + i).value != 0 && document.getElementById("refv" + i).value != 0 && document.getElementById("refpeso" + i).value != 0 && document.getElementById("refcomp" + i).value != 0 && document.getElementById("refvlarg" + i).value != 0 && document.getElementById("refalt" + i).value != 0 && document.getElementById("refvol" + i).value != 0 && document.getElementById("reftria" + i).value != 0) {
+                produtos = produtos + document.getElementById("refp" + i).value + ',' + document.getElementById("refq" + i).value + ',' + document.getElementById("refum" + i).value + ',' + document.getElementById("refv" + i).value + ',' + document.getElementById("refpeso" + i).value + ',' + document.getElementById("refcomp" + i).value + ',' + document.getElementById("refvlarg" + i).value + ',' + document.getElementById("refalt" + i).value + ',' + document.getElementById("refvol" + i).value + ',' + document.getElementById("reftria" + i).value}
         }
 
         if (solicitante.value != 0 && origem.value != 0 && destino.value != 0 && pagador.value != 0 && carga.value != 0 && descarga.value != 0 && produtos != 0) {
